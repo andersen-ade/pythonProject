@@ -43,5 +43,3 @@ texts = [" ".join(process_text(text)) for text in texts]
 
 print(reviews)
 
-# this is a comment 
-
