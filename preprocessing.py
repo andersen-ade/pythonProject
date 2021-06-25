@@ -1,4 +1,5 @@
 import pandas as pd
+from stop_words import get_stop_words
 import os
 import re
 from wordcloud import WordCloud
@@ -7,7 +8,6 @@ import gensim
 from gensim.utils import simple_preprocess
 import nltk
 nltk.download('stopwords')
-from nltk.corpus import stopwords
 
 
 papers = pd.read_csv('victories.csv', encoding='windows-1252')
@@ -50,4 +50,5 @@ data_words = list(sent_to_words(data))
 # remove stop words
 data_words = remove_stopwords(data_words)
 print(data_words[:1][0][:30])
+
 
