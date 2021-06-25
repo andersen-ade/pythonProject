@@ -3,9 +3,13 @@ from stop_words import get_stop_words
 from nltk.stem.porter import PorterStemmer
 from gensim import corpora, models
 import gensim
+import re
 import pyLDAvis.gensim as gensimvis
 import pyLDAvis
 import pandas as pd
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+
 
 tokenizer = RegexpTokenizer(r'\w+')
 
@@ -55,3 +59,21 @@ ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=7, id2word=diction
 print(ldamodel.print_topics())
 vis=gensimvis.prepare(ldamodel,corpus,dictionary=ldamodel.id2word)
 pyLDAvis.save_html(vis,'Topicvis.html')
+
+data['paper_text_processed'] = data['Petition Title'].map(lambda x: re.sub('[,\.!?]', '', x))
+
+data['paper_text_processed'] = data['paper_text_processed'].map(lambda x: x.lower())
+
+# Join the different processed titles together.
+long_string = ','.join(list(data['paper_text_processed'].values))
+
+# Create a WordCloud object
+wordcloud = WordCloud(background_color="white", max_words=5000, contour_width=3, contour_color='steelblue')
+
+# Generate a word cloud
+cloud=wordcloud.generate(long_string)
+
+# Visualize the word cloud
+plt.imshow(cloud, interpolation='bilinear')
+plt.axis("off")
+plt.show()
